@@ -34,7 +34,26 @@ Once verified, open `index.html` to start your presentation!
 
 ## Deployment Options
 
-### Option 1: GitHub Pages (Free & Easy)
+### Option 1: Railway (Recommended - Auto-Deploy!)
+
+**✨ Easiest deployment with automatic updates from GitHub!**
+
+See [RAILWAY_DEPLOY.md](RAILWAY_DEPLOY.md) for complete guide.
+
+**Quick Start:**
+1. Go to [railway.app](https://railway.app)
+2. Click "Deploy from GitHub repo"
+3. Select `CribConnects/HTML-Scroller-Audio-`
+4. Click "Generate Domain"
+5. **Done!** Your presentation is live at `https://[your-project].railway.app`
+
+**Benefits:**
+- ✅ Auto-deploys on every git push
+- ✅ Free tier (500 hours/month)
+- ✅ Automatic HTTPS
+- ✅ Fast & reliable hosting
+
+### Option 2: GitHub Pages (Free & Easy)
 
 1. **Push to GitHub:**
    ```bash
@@ -52,7 +71,7 @@ Once verified, open `index.html` to start your presentation!
    - URL will be: `https://[username].github.io/[repo-name]/`
    - Example: `https://cribconnects.github.io/ai-strategy-presentation/`
 
-### Option 2: Netlify (Drag & Drop)
+### Option 3: Netlify (Drag & Drop)
 
 1. **Visit:** https://app.netlify.com/drop
 2. **Drag folder:** Drag the entire project folder
@@ -63,7 +82,7 @@ Once verified, open `index.html` to start your presentation!
 - Add your custom domain
 - Update DNS records
 
-### Option 3: Vercel (CLI or Git)
+### Option 4: Vercel (CLI or Git)
 
 **Via CLI:**
 ```bash
@@ -76,7 +95,7 @@ vercel
 2. Auto-deploys on every push
 3. Get URL: `https://[project-name].vercel.app`
 
-### Option 4: Traditional Web Hosting
+### Option 5: Traditional Web Hosting
 
 Upload these files via FTP/SFTP:
 ```

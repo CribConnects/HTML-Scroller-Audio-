@@ -1,0 +1,24 @@
+{
+  "name": "cribconnects-ai-strategy-presentation",
+  "version": "1.0.0",
+  "description": "CribConnects AI Strategy interactive presentation with voice-over",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve . -l ${PORT:-3000} -s",
+    "dev": "serve . -l 3000"
+  },
+  "keywords": [
+    "presentation",
+    "ai",
+    "strategy",
+    "cribconnects"
+  ],
+  "author": "CribConnects",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
