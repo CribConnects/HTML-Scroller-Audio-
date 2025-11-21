@@ -298,34 +298,17 @@
         let isPlaying = false;
         let currentSection = 0;
         let hasAudio = false;
+        let audioReady = false;
         let simulatedTime = 0;
         let timerInterval = null;
 
-        function startPresentation() {
-            console.log('🎬 User clicked start button');
-
-            // Hide start screen
-            startScreen.classList.add('hidden');
-            setTimeout(() => {
-                startScreen.style.display = 'none';
-            }, 500);
-
-            // Start playing
-            init();
-
-            // Start audio/timer after a brief delay
-            setTimeout(() => {
-                togglePlay();
-            }, 500);
-        }
-
-        function init() {
-            console.log('🎬 Initializing presentation...');
+        // Initialize audio loading immediately when page loads
+        function initAudio() {
+            console.log('🎬 Pre-loading audio...');
 
             // Check if audio is available
             audioPlayer.addEventListener('loadedmetadata', () => {
-                hasAudio = true;
-                console.log('✅ Audio loaded successfully!');
+                console.log('✅ Audio metadata loaded!');
                 console.log(`📊 Duration: ${audioPlayer.duration.toFixed(2)} seconds`);
             });
 
@@ -333,10 +316,17 @@
                 console.log('✅ Audio can start playing');
             });
 
+            audioPlayer.addEventListener('canplaythrough', () => {
+                hasAudio = true;
+                audioReady = true;
+                console.log('✅ Audio fully loaded and ready!');
+            });
+
             audioPlayer.addEventListener('error', (e) => {
                 hasAudio = false;
+                audioReady = false;
                 console.error('❌ Audio error:', audioPlayer.error);
-                console.log('⚠️ Falling back to timer mode');
+                console.log('⚠️ Will fall back to timer mode');
             });
 
             audioPlayer.addEventListener('play', () => {
@@ -347,11 +337,39 @@
                 console.log('⏸️ Audio paused');
             });
 
+            audioPlayer.addEventListener('timeupdate', () => updateSection());
+            audioPlayer.addEventListener('ended', onAudioEnded);
+
+            // Try to preload the audio
+            audioPlayer.load();
+        }
+
+        function startPresentation() {
+            console.log('🎬 User clicked start button');
+
+            // Hide start screen
+            startScreen.classList.add('hidden');
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+            }, 500);
+
+            // Initialize presentation
+            init();
+
+            // Wait a bit longer to ensure audio is ready, then start
+            setTimeout(() => {
+                console.log('🎬 Starting playback...');
+                console.log(`Audio ready: ${audioReady}, Has audio: ${hasAudio}`);
+                togglePlay();
+            }, 800);
+        }
+
+        function init() {
+            console.log('🎬 Initializing presentation controls...');
+
             // Event listeners
             playBtn.addEventListener('click', togglePlay);
             muteBtn.addEventListener('click', toggleMute);
-            audioPlayer.addEventListener('timeupdate', () => updateSection());
-            audioPlayer.addEventListener('ended', onAudioEnded);
 
             // Keyboard controls
             document.addEventListener('keydown', handleKeyboard);
@@ -360,9 +378,15 @@
             sections[0].classList.add('active');
         }
 
+        // Load audio as soon as the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('📄 Page loaded, initializing audio...');
+            initAudio();
+        });
+
         function togglePlay() {
             if (isPlaying) {
-                if (hasAudio) {
+                if (hasAudio && audioReady) {
                     audioPlayer.pause();
                     console.log('⏸️ Pausing audio playback');
                 } else {
@@ -372,20 +396,59 @@
                 playBtn.textContent = '▶';
                 isPlaying = false;
             } else {
-                if (hasAudio) {
+                if (hasAudio && audioReady) {
                     console.log('▶️ Attempting to play audio...');
-                    audioPlayer.play().catch(err => {
-                        console.error('❌ Audio play blocked!', err);
-                        console.log('🔄 Falling back to timer mode');
-                        hasAudio = false;
-                        startTimer();
-                    });
+                    console.log(`Current audio state - readyState: ${audioPlayer.readyState}, paused: ${audioPlayer.paused}`);
+
+                    // Reset to beginning if needed
+                    if (audioPlayer.currentTime >= audioPlayer.duration) {
+                        audioPlayer.currentTime = 0;
+                    }
+
+                    const playPromise = audioPlayer.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            console.log('✅ Audio playing successfully!');
+                            playBtn.textContent = '⏸';
+                            isPlaying = true;
+                        }).catch(err => {
+                            console.error('❌ Audio play failed!', err);
+                            console.log('🔄 Falling back to timer mode');
+                            hasAudio = false;
+                            audioReady = false;
+                            startTimer();
+                            playBtn.textContent = '⏸';
+                            isPlaying = true;
+                        });
+                    }
+                } else if (hasAudio && !audioReady) {
+                    console.log('⏳ Audio is loading, waiting for it to be ready...');
+                    // Wait for audio to be ready
+                    const checkReady = setInterval(() => {
+                        if (audioReady) {
+                            clearInterval(checkReady);
+                            console.log('✅ Audio is now ready, starting playback');
+                            togglePlay();
+                        }
+                    }, 100);
+
+                    // Fallback to timer after 3 seconds
+                    setTimeout(() => {
+                        if (!audioReady) {
+                            clearInterval(checkReady);
+                            console.log('⚠️ Audio took too long to load, using timer mode');
+                            hasAudio = false;
+                            startTimer();
+                            playBtn.textContent = '⏸';
+                            isPlaying = true;
+                        }
+                    }, 3000);
                 } else {
                     console.log('⏱️ Starting timer mode (no audio available)');
                     startTimer();
+                    playBtn.textContent = '⏸';
+                    isPlaying = true;
                 }
-                playBtn.textContent = '⏸';
-                isPlaying = true;
             }
         }
 
