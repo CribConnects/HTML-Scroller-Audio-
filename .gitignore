@@ -1,10 +1,7 @@
-# Audio files
-audio/*.mp3
-audio/*.wav
-audio/*.ogg
-
-# Keep the placeholder
-!audio/PLACE_YOUR_AUDIO_HERE.txt
+# Audio files (keeping the main voiceover in repo)
+# audio/*.mp3
+# audio/*.wav
+# audio/*.ogg
 
 # OS files
 .DS_Store
