@@ -235,6 +235,35 @@
                 width: 90%;
                 max-width: 350px;
             }
+
+            .start-content h1 {
+                font-size: 32px;
+                margin-bottom: 15px;
+            }
+
+            .start-content p {
+                font-size: 16px;
+                margin-bottom: 30px;
+            }
+
+            .start-button {
+                font-size: 18px;
+                padding: 20px 40px;
+            }
+
+            /* Smaller expandable card hints on mobile */
+            .expandable-card::after {
+                font-size: 10px;
+                padding: 4px 8px;
+                right: 10px;
+                top: 8px;
+            }
+
+            /* Better touch targets for controls */
+            .control-btn {
+                min-width: 50px;
+                min-height: 50px;
+            }
         }
     </style>
 </head>
@@ -292,14 +321,14 @@
     <!-- Content -->
     <div id="content">
         <!-- Hero - 0:00-0:11 (11 sec) -->
-        <section class="demo-section min-h-screen flex items-center justify-center px-8 pt-20" data-start="0" data-end="11">
+        <section class="demo-section min-h-screen flex items-center justify-center px-4 md:px-8 pt-20" data-start="0" data-end="11">
             <div class="max-w-5xl mx-auto text-center">
-                <div class="glass-strong rounded-3xl p-12 border border-cyan-200/50 shadow-2xl interactive-card">
-                    <h1 class="text-6xl md:text-7xl font-bold mb-8 text-gray-900 serif leading-tight">
+                <div class="glass-strong rounded-3xl p-6 md:p-12 border border-cyan-200/50 shadow-2xl interactive-card">
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 text-gray-900 serif leading-tight">
                         CribConnects <span style="color: #88D8E8;">x</span> CPI<br/>
                         <span style="color: #88D8E8;">AI Strategie</span>
                     </h1>
-                    <p class="text-2xl text-gray-700 sans font-light leading-relaxed">
+                    <p class="text-lg md:text-2xl text-gray-700 sans font-light leading-relaxed">
                         Van <strong>licenties</strong> naar <strong>cultuurverandering</strong>
                     </p>
                 </div>
@@ -307,14 +336,14 @@
         </section>
 
         <!-- Problem - 0:11-0:34 (23 sec) -->
-        <section class="demo-section min-h-screen flex items-center justify-center px-8 py-20" data-start="11" data-end="34">
+        <section class="demo-section min-h-screen flex items-center justify-center px-4 md:px-8 py-20" data-start="11" data-end="34">
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-5xl font-bold mb-8 text-gray-900 serif text-center">Het Probleem</h2>
+                <h2 class="text-3xl md:text-5xl font-bold mb-6 md:mb-8 text-gray-900 serif text-center">Het Probleem</h2>
 
-                <div class="grid md:grid-cols-3 gap-6 mb-8">
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
-                        <div class="text-5xl mb-4 text-center">💰</div>
-                        <h3 class="text-xl font-bold text-gray-900 sans mb-3 text-center">Software Inkopen</h3>
+                <div class="grid md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+                    <div class="glass-strong rounded-2xl p-6 md:p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
+                        <div class="text-4xl md:text-5xl mb-3 md:mb-4 text-center">💰</div>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 sans mb-2 md:mb-3 text-center">Software Inkopen</h3>
                         <p class="text-gray-600 sans font-light text-center">Bedrijven investeren <strong>flink</strong> in AI-tools</p>
                         <div class="extra-content">
                             <div class="mt-3 pt-3 border-t border-cyan-200/30">
@@ -325,9 +354,9 @@
                         </div>
                     </div>
 
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
-                        <div class="text-5xl mb-4 text-center">🔧</div>
-                        <h3 class="text-xl font-bold text-gray-900 sans mb-3 text-center">Zelf Bouwen</h3>
+                    <div class="glass-strong rounded-2xl p-6 md:p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
+                        <div class="text-4xl md:text-5xl mb-3 md:mb-4 text-center">🔧</div>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 sans mb-2 md:mb-3 text-center">Zelf Bouwen</h3>
                         <p class="text-gray-600 sans font-light text-center">Teams ontwikkelen <strong>eigen oplossingen</strong></p>
                         <div class="extra-content">
                             <div class="mt-3 pt-3 border-t border-cyan-200/30">
@@ -338,9 +367,9 @@
                         </div>
                     </div>
 
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
-                        <div class="text-5xl mb-4 text-center">🔑</div>
-                        <h3 class="text-xl font-bold text-gray-900 sans mb-3 text-center">Licenties Toekennen</h3>
+                    <div class="glass-strong rounded-2xl p-6 md:p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
+                        <div class="text-4xl md:text-5xl mb-3 md:mb-4 text-center">🔑</div>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 sans mb-2 md:mb-3 text-center">Licenties Toekennen</h3>
                         <p class="text-gray-600 sans font-light text-center"><strong>Toegang</strong> wordt verstrekt</p>
                         <div class="extra-content">
                             <div class="mt-3 pt-3 border-t border-cyan-200/30">
@@ -352,9 +381,9 @@
                     </div>
                 </div>
 
-                <div class="glass-strong border-l-4 rounded-2xl p-8 shadow-xl max-w-3xl mx-auto interactive-card" style="border-color: #FF6B6B;">
-                    <h3 class="text-2xl font-bold text-gray-900 sans mb-4">Het Resultaat</h3>
-                    <p class="text-lg text-gray-700 sans font-light leading-relaxed">
+                <div class="glass-strong border-l-4 rounded-2xl p-6 md:p-8 shadow-xl max-w-3xl mx-auto interactive-card" style="border-color: #FF6B6B;">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 sans mb-3 md:mb-4">Het Resultaat</h3>
+                    <p class="text-base md:text-lg text-gray-700 sans font-light leading-relaxed">
                         Bij <strong>implementatie gebeurt er vrij weinig</strong>. De tools worden <strong>nauwelijks gebruikt</strong> en de <strong>ROI blijft uit</strong>. Slechts <strong>20-30%</strong> van de medewerkers gebruikt AI actief.
                     </p>
                 </div>
@@ -362,16 +391,16 @@
         </section>
 
         <!-- Strategy - 0:34-1:01 (27 sec) -->
-        <section class="demo-section min-h-screen flex items-center justify-center px-8 py-20" data-start="34" data-end="61">
+        <section class="demo-section min-h-screen flex items-center justify-center px-4 md:px-8 py-20" data-start="34" data-end="61">
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-5xl font-bold mb-8 text-gray-900 serif text-center">Onze Strategie</h2>
+                <h2 class="text-3xl md:text-5xl font-bold mb-6 md:mb-8 text-gray-900 serif text-center">Onze Strategie</h2>
 
-                <div class="grid md:grid-cols-2 gap-6 mb-8">
-                    <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-lg highlight-box expandable-card" onclick="toggleCard(this)">
-                        <div class="w-16 h-16 rounded-xl flex items-center justify-center mb-6 mx-auto shadow-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
-                            <span class="text-3xl">🎯</span>
+                <div class="grid md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
+                    <div class="glass-strong rounded-2xl p-6 md:p-10 border border-cyan-200/50 shadow-lg highlight-box expandable-card" onclick="toggleCard(this)">
+                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center mb-4 md:mb-6 mx-auto shadow-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                            <span class="text-2xl md:text-3xl">🎯</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-900 sans mb-4 text-center">AI als Kans</h3>
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 sans mb-3 md:mb-4 text-center">AI als Kans</h3>
                         <ul class="space-y-3 text-gray-700 sans">
                             <li class="flex items-center gap-3">
                                 <span style="color: #66C5D6;">✓</span>
@@ -395,11 +424,11 @@
                         </div>
                     </div>
 
-                    <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
-                        <div class="w-16 h-16 rounded-xl flex items-center justify-center mb-6 mx-auto shadow-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
-                            <span class="text-3xl">👥</span>
+                    <div class="glass-strong rounded-2xl p-6 md:p-10 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
+                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center mb-4 md:mb-6 mx-auto shadow-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                            <span class="text-2xl md:text-3xl">👥</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-900 sans mb-4 text-center">Menselijk Perspectief</h3>
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 sans mb-3 md:mb-4 text-center">Menselijk Perspectief</h3>
                         <ul class="space-y-3 text-gray-700 sans">
                             <li class="flex items-center gap-3">
                                 <span style="color: #66C5D6;">✓</span>
@@ -424,9 +453,9 @@
                     </div>
                 </div>
 
-                <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-xl text-center max-w-4xl mx-auto interactive-card">
-                    <h3 class="text-2xl font-bold text-gray-900 sans mb-4">Praktische Coaching op de Werkvloer</h3>
-                    <p class="text-lg text-gray-700 sans font-light leading-relaxed">
+                <div class="glass-strong rounded-2xl p-6 md:p-10 border border-cyan-200/50 shadow-xl text-center max-w-4xl mx-auto interactive-card">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 sans mb-3 md:mb-4">Praktische Coaching op de Werkvloer</h3>
+                    <p class="text-base md:text-lg text-gray-700 sans font-light leading-relaxed">
                         We spitten <strong>workflows</strong> uit en helpen AI <strong>écht te integreren</strong>. Niet vanuit techniek, maar vanuit <strong>eigen behoeften</strong>. Onze coaches werken <strong>hands-on</strong> met teams om concrete use cases te identificeren en implementeren.
                     </p>
                 </div>
@@ -434,23 +463,23 @@
         </section>
 
         <!-- Approach - 1:01-1:28 (27 sec) -->
-        <section class="demo-section min-h-screen flex items-center justify-center px-8 py-20" data-start="61" data-end="88">
+        <section class="demo-section min-h-screen flex items-center justify-center px-4 md:px-8 py-20" data-start="61" data-end="88">
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-5xl font-bold mb-8 text-gray-900 serif text-center">Onze Aanpak</h2>
+                <h2 class="text-3xl md:text-5xl font-bold mb-6 md:mb-8 text-gray-900 serif text-center">Onze Aanpak</h2>
 
-                <div class="space-y-6">
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
-                        <div class="flex items-center gap-6">
-                            <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                <div class="space-y-4 md:space-y-6">
+                    <div class="glass-strong rounded-2xl p-6 md:p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
+                        <div class="flex items-center gap-4 md:gap-6">
+                            <div class="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-xl md:text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
                                 ✨
                             </div>
                             <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-900 sans mb-2">01 - Kick-off Workshop</h3>
+                                <h3 class="text-lg md:text-xl font-bold text-gray-900 sans mb-1 md:mb-2">01 - Kick-off Workshop</h3>
                                 <p class="text-gray-600 sans font-light"><strong>Enthousiasmeren</strong> en de basis leggen</p>
                             </div>
                         </div>
                         <div class="extra-content">
-                            <div class="mt-4 pt-4 border-t border-cyan-200/30 ml-20">
+                            <div class="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-cyan-200/30 ml-14 md:ml-20">
                                 <p class="text-gray-700 sans text-sm leading-relaxed">
                                     <strong>Interactieve sessie</strong> waarin we de AI-kansen voor uw organisatie in kaart brengen. We tonen <strong>concrete voorbeelden</strong> en inspireren teams met <strong>quick wins</strong>.
                                 </p>
@@ -458,18 +487,18 @@
                         </div>
                     </div>
 
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
-                        <div class="flex items-center gap-6">
-                            <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                    <div class="glass-strong rounded-2xl p-6 md:p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
+                        <div class="flex items-center gap-4 md:gap-6">
+                            <div class="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-xl md:text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
                                 👥
                             </div>
                             <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-900 sans mb-2">02 - Hands-on Coaching</h3>
+                                <h3 class="text-lg md:text-xl font-bold text-gray-900 sans mb-1 md:mb-2">02 - Hands-on Coaching</h3>
                                 <p class="text-gray-600 sans font-light">Begeleiding <strong>op de werkvloer</strong></p>
                             </div>
                         </div>
                         <div class="extra-content">
-                            <div class="mt-4 pt-4 border-t border-cyan-200/30 ml-20">
+                            <div class="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-cyan-200/30 ml-14 md:ml-20">
                                 <p class="text-gray-700 sans text-sm leading-relaxed">
                                     Onze coaches werken <strong>naast uw medewerkers</strong>, analyseren workflows en helpen AI <strong>direct toe te passen</strong>. Niet in theorie, maar in <strong>de praktijk van alledag</strong>.
                                 </p>
@@ -477,18 +506,18 @@
                         </div>
                     </div>
 
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
-                        <div class="flex items-center gap-6">
-                            <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                    <div class="glass-strong rounded-2xl p-6 md:p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
+                        <div class="flex items-center gap-4 md:gap-6">
+                            <div class="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-xl md:text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
                                 💬
                             </div>
                             <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-900 sans mb-2">03 - Helpdesk & Support</h3>
+                                <h3 class="text-lg md:text-xl font-bold text-gray-900 sans mb-1 md:mb-2">03 - Helpdesk & Support</h3>
                                 <p class="text-gray-600 sans font-light"><strong>Continue</strong> ondersteuning</p>
                             </div>
                         </div>
                         <div class="extra-content">
-                            <div class="mt-4 pt-4 border-t border-cyan-200/30 ml-20">
+                            <div class="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-cyan-200/30 ml-14 md:ml-20">
                                 <p class="text-gray-700 sans text-sm leading-relaxed">
                                     <strong>Dedicated Slack-kanaal</strong> en wekelijkse Q&A sessies. Medewerkers kunnen <strong>altijd terecht</strong> met vragen, ideën of uitdagingen bij AI-toepassing.
                                 </p>
@@ -496,18 +525,18 @@
                         </div>
                     </div>
 
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
-                        <div class="flex items-center gap-6">
-                            <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                    <div class="glass-strong rounded-2xl p-6 md:p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
+                        <div class="flex items-center gap-4 md:gap-6">
+                            <div class="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-xl md:text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
                                 🏆
                             </div>
                             <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-900 sans mb-2">04 - Viering van Successen</h3>
+                                <h3 class="text-lg md:text-xl font-bold text-gray-900 sans mb-1 md:mb-2">04 - Viering van Successen</h3>
                                 <p class="text-gray-600 sans font-light"><strong>Meten</strong>, vieren en <strong>optimaliseren</strong></p>
                             </div>
                         </div>
                         <div class="extra-content">
-                            <div class="mt-4 pt-4 border-t border-cyan-200/30 ml-20">
+                            <div class="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-cyan-200/30 ml-14 md:ml-20">
                                 <p class="text-gray-700 sans text-sm leading-relaxed">
                                     We meten <strong>impact</strong> (tijdsbesparing, productiviteit, tevredenheid), delen successen breed en optimaliseren continue. <strong>Vieren van quick wins</strong> motiveert het hele team.
                                 </p>
@@ -519,17 +548,17 @@
         </section>
 
         <!-- CTA - 1:28-1:46 (18 sec) -->
-        <section class="demo-section min-h-screen flex items-center justify-center px-8 py-20" data-start="88" data-end="106">
+        <section class="demo-section min-h-screen flex items-center justify-center px-4 md:px-8 py-20" data-start="88" data-end="106">
             <div class="max-w-4xl mx-auto text-center">
-                <div class="glass-strong rounded-3xl p-12 border border-cyan-200/50 shadow-2xl interactive-card">
-                    <div class="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl text-5xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                <div class="glass-strong rounded-3xl p-6 md:p-12 border border-cyan-200/50 shadow-2xl interactive-card">
+                    <div class="w-16 h-16 md:w-24 md:h-24 rounded-3xl flex items-center justify-center mx-auto mb-6 md:mb-8 shadow-xl text-4xl md:text-5xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
                         🚀
                     </div>
-                    <h2 class="text-4xl font-bold serif mb-6 text-gray-900">Klaar om te Beginnen?</h2>
-                    <p class="text-xl font-light mb-10 text-gray-700 sans leading-relaxed">
+                    <h2 class="text-3xl md:text-4xl font-bold serif mb-4 md:mb-6 text-gray-900">Klaar om te Beginnen?</h2>
+                    <p class="text-lg md:text-xl font-light mb-8 md:mb-10 text-gray-700 sans leading-relaxed">
                         Van <strong>licenties</strong> naar <strong>cultuurverandering</strong> met praktische coaching en <strong>meetbare resultaten</strong>.
                     </p>
-                    <a href="mailto:info@cribconnects.com?subject=Kennismaking CribConnects x CPI AI Strategie&body=Beste CribConnects team,%0D%0A%0D%0AIk ben geïnteresseerd in een kennismaking over jullie AI strategie aanpak.%0D%0A%0D%0AMet vriendelijke groet," class="inline-block px-12 py-5 text-white rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all sans shadow-lg text-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                    <a href="mailto:info@cribconnects.com?subject=Kennismaking CribConnects x CPI AI Strategie&body=Beste CribConnects team,%0D%0A%0D%0AIk ben geïnteresseerd in een kennismaking over jullie AI strategie aanpak.%0D%0A%0D%0AMet vriendelijke groet," class="inline-block px-8 md:px-12 py-4 md:py-5 text-white rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all sans shadow-lg text-base md:text-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
                         Plan een Kennismaking
                     </a>
                 </div>
