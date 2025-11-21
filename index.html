@@ -114,30 +114,6 @@
             }
         }
 
-        /* Subtitles */
-        #subtitles {
-            position: fixed;
-            bottom: 180px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.85);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-family: 'Inter', sans-serif;
-            font-size: 20px;
-            max-width: 90%;
-            text-align: center;
-            z-index: 998;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            line-height: 1.4;
-        }
-
-        #subtitles.show {
-            opacity: 1;
-        }
-
         /* Pop-up Tooltip */
         .pause-tooltip {
             position: fixed;
@@ -233,12 +209,6 @@
         }
 
         @media (max-width: 768px) {
-            #subtitles {
-                bottom: 140px;
-                font-size: 16px;
-                padding: 12px 20px;
-            }
-
             .pause-tooltip {
                 width: 90%;
                 max-width: 350px;
@@ -279,9 +249,6 @@
     <div id="loadingIndicator" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(102, 197, 214, 0.95); color: white; padding: 20px 40px; border-radius: 15px; z-index: 10000; font-family: 'Inter', sans-serif; font-size: 18px;">
         ⏳ Video laden...
     </div>
-
-    <!-- Subtitles -->
-    <div id="subtitles"></div>
 
     <!-- Pause Tooltip -->
     <div class="pause-tooltip" id="pauseTooltip">
@@ -863,8 +830,7 @@
                 }
             });
 
-            // Update subtitles and check tooltip triggers
-            updateSubtitles(currentTime);
+            // Check tooltip triggers
             checkTooltipTriggers(currentTime);
         }
 
@@ -934,52 +900,6 @@
             { time: 50, id: 'strategy' },   // During strategy section
             { time: 75, id: 'approach' }    // During approach section
         ];
-
-        // ===== SUBTITLES SYSTEM =====
-
-        const subtitles = document.getElementById('subtitles');
-        let currentSubtitle = '';
-
-        const subtitleData = [
-            // Hero (0-11s)
-            { start: 0, end: 5, text: "Welkom bij CribConnects x CPI" },
-            { start: 5, end: 11, text: "Van licenties naar echte cultuurverandering" },
-
-            // Problem (11-34s)
-            { start: 11, end: 16, text: "Bedrijven investeren massaal in AI-tools" },
-            { start: 16, end: 22, text: "Teams bouwen eigen oplossingen" },
-            { start: 22, end: 28, text: "Licenties worden toegekend..." },
-            { start: 28, end: 34, text: "Maar de adoptie blijft achter" },
-
-            // Strategy (34-61s)
-            { start: 34, end: 40, text: "Wij zien AI als kans voor transformatie" },
-            { start: 40, end: 47, text: "Het gaat om cultuurverandering, niet alleen technologie" },
-            { start: 47, end: 54, text: "We beginnen bij de mens en hun behoeften" },
-            { start: 54, end: 61, text: "Praktische coaching op de werkvloer is de sleutel" },
-
-            // Approach (61-88s)
-            { start: 61, end: 67, text: "Stap 1: Kick-off workshop met quick wins" },
-            { start: 67, end: 73, text: "Stap 2: Hands-on coaching naast medewerkers" },
-            { start: 73, end: 80, text: "Stap 3: Continue support via Slack en Q&A" },
-            { start: 80, end: 88, text: "Stap 4: Successen meten, vieren en delen" },
-
-            // CTA (88-106s)
-            { start: 88, end: 97, text: "Klaar om AI écht te integreren?" },
-            { start: 97, end: 106, text: "Plan een kennismaking met ons team" }
-        ];
-
-        function updateSubtitles(currentTime) {
-            const subtitle = subtitleData.find(s => currentTime >= s.start && currentTime < s.end);
-
-            if (subtitle && subtitle.text !== currentSubtitle) {
-                currentSubtitle = subtitle.text;
-                subtitles.textContent = subtitle.text;
-                subtitles.classList.add('show');
-            } else if (!subtitle && currentSubtitle) {
-                currentSubtitle = '';
-                subtitles.classList.remove('show');
-            }
-        }
 
         function checkTooltipTriggers(currentTime) {
             tooltipTriggers.forEach(trigger => {
