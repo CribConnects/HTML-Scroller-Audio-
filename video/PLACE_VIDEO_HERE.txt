@@ -7,7 +7,7 @@ fullsizerender.mp4 (of fullsizerender.mov)
 
 Specificaties:
 - Format: MP4 (H.264) of MOV
-- Duur: 79 seconden (1:19) - zelfde als audio
+- Duur: 106 seconden (1:46) - zelfde als presentatie
 - Resolutie: 1080x1080 (vierkant) of 1920x1080 (landscape)
 - Bitrate: 2-5 Mbps aanbevolen
 - Max bestandsgrootte: 50MB (aanbevolen voor snelle loading)

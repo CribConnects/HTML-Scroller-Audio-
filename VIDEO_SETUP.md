@@ -22,7 +22,7 @@ Uw video bestand `fullsizerender` moet worden toegevoegd aan de `video/` folder.
 
 **Aanbevolen instellingen:**
 - **Formaat**: MP4 (H.264 codec)
-- **Duur**: 1:19 (79 seconden) - zelfde als audio
+- **Duur**: 1:46 (106 seconden) - zelfde als presentatie
 - **Resolutie**: 1080x1080 (vierkant) of 1920x1080 (landscape)
 - **Bitrate**: 2-5 Mbps (goede kwaliteit, niet te groot)
 - **Bestandsgrootte**: Maximaal 50MB voor snelle loading
@@ -66,8 +66,8 @@ De video is volledig gesynchroniseerd met de audio:
 
 ### Audio vs Video
 
-**Audio**: Volledig geluid met voice-over (79 seconden)
-**Video**: Stille video van presenteerder (79 seconden, muted)
+**Audio**: Volledig geluid met voice-over (106 seconden / 1:46)
+**Video**: Stille video van presenteerder (106 seconden / 1:46, muted)
 
 De gebruiker hoort alleen de audio, maar ziet ook de presenteerder in de video ballon.
 
@@ -99,7 +99,7 @@ Als alles goed is, zie je in de browser console (F12):
 🎬 Pre-loading audio and video...
 ✅ Audio metadata loaded!
 ✅ Video metadata loaded!
-📊 Video duration: 79.xx seconds
+📊 Video duration: 106.xx seconds
 ✅ Audio fully loaded and ready!
 ✅ Video fully loaded and ready!
 🎬 User clicked start button
@@ -135,7 +135,7 @@ Als je geen video toevoegt:
 **Oplossing**:
 - De code synchroniseert automatisch
 - Als het verschil > 0.3 seconden is, wordt video gecorrigeerd
-- Zorg dat video dezelfde duur heeft als audio (79 seconden)
+- Zorg dat video dezelfde duur heeft als presentatie (106 seconden / 1:46)
 
 ### Video kwaliteit slecht
 
