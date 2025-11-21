@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Debug Test</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        button {
+            background: #88D8E8;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #66C5D6;
+        }
+        .log {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .info { color: #007bff; }
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        audio {
+            width: 100%;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-box">
+        <h1>🔊 Audio Debug Test</h1>
+        <p>Use this page to diagnose audio playback issues.</p>
+    </div>
+
+    <div class="test-box">
+        <h2>Audio Player (Native Controls)</h2>
+        <p>Try playing with the built-in browser controls first:</p>
+        <audio id="nativeAudio" controls preload="auto">
+            <source src="audio/cribconnects-voiceover.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <div class="test-box">
+        <h2>JavaScript Controls</h2>
+        <audio id="testAudio" preload="auto">
+            <source src="audio/cribconnects-voiceover.mp3" type="audio/mpeg">
+        </audio>
+
+        <div class="controls">
+            <button onclick="testPlay()">▶ Play</button>
+            <button onclick="testPause()">⏸ Pause</button>
+            <button onclick="testStop()">⏹ Stop</button>
+            <button onclick="testVolume(0.5)">🔉 50% Volume</button>
+            <button onclick="testVolume(1.0)">🔊 100% Volume</button>
+            <button onclick="testMute()">🔇 Toggle Mute</button>
+            <button onclick="clearLog()">🗑️ Clear Log</button>
+        </div>
+
+        <div id="status" style="margin-top: 20px; padding: 15px; background: #e7f3ff; border-radius: 5px;">
+            <strong>Status:</strong> <span id="statusText">Ready</span><br>
+            <strong>Current Time:</strong> <span id="currentTime">0:00</span><br>
+            <strong>Duration:</strong> <span id="duration">Unknown</span><br>
+            <strong>Volume:</strong> <span id="volumeLevel">100%</span><br>
+            <strong>Muted:</strong> <span id="mutedStatus">No</span>
+        </div>
+
+        <div id="log" class="log">
+            <div class="log-entry info">Ready to test audio playback...</div>
+        </div>
+    </div>
+
+    <div class="test-box">
+        <h2>📋 Troubleshooting Checklist</h2>
+        <ul>
+            <li>Are you using a local server (http://localhost) or file:// protocol?</li>
+            <li>Recommended: Use <code>python -m http.server 8000</code> and visit <code>http://localhost:8000/audio-debug.html</code></li>
+            <li>Check if audio file exists: <code>audio/cribconnects-voiceover.mp3</code></li>
+            <li>Try playing with native controls first (above)</li>
+            <li>Check browser console (F12) for errors</li>
+            <li>Try a different browser</li>
+        </ul>
+    </div>
+
+    <script>
+        const audio = document.getElementById('testAudio');
+        const nativeAudio = document.getElementById('nativeAudio');
+        const logDiv = document.getElementById('log');
+
+        function log(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function updateStatus() {
+            document.getElementById('statusText').textContent = audio.paused ? 'Paused' : 'Playing';
+            document.getElementById('currentTime').textContent = formatTime(audio.currentTime);
+            document.getElementById('duration').textContent = audio.duration ? formatTime(audio.duration) : 'Unknown';
+            document.getElementById('volumeLevel').textContent = Math.round(audio.volume * 100) + '%';
+            document.getElementById('mutedStatus').textContent = audio.muted ? 'Yes' : 'No';
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        async function testPlay() {
+            log('Attempting to play audio...', 'info');
+            try {
+                await audio.play();
+                log('✓ Audio playing successfully!', 'success');
+                updateStatus();
+            } catch (error) {
+                log('✗ Error playing audio: ' + error.message, 'error');
+                log('This is usually due to browser autoplay policy. Try clicking play manually.', 'info');
+            }
+        }
+
+        function testPause() {
+            audio.pause();
+            log('Audio paused', 'info');
+            updateStatus();
+        }
+
+        function testStop() {
+            audio.pause();
+            audio.currentTime = 0;
+            log('Audio stopped and reset to beginning', 'info');
+            updateStatus();
+        }
+
+        function testVolume(level) {
+            audio.volume = level;
+            log(`Volume set to ${Math.round(level * 100)}%`, 'info');
+            updateStatus();
+        }
+
+        function testMute() {
+            audio.muted = !audio.muted;
+            log(`Audio ${audio.muted ? 'muted' : 'unmuted'}`, 'info');
+            updateStatus();
+        }
+
+        function clearLog() {
+            logDiv.innerHTML = '<div class="log-entry info">Log cleared. Ready for testing...</div>';
+        }
+
+        // Event listeners
+        audio.addEventListener('loadedmetadata', () => {
+            log(`✓ Audio metadata loaded. Duration: ${formatTime(audio.duration)}`, 'success');
+            updateStatus();
+        });
+
+        audio.addEventListener('canplay', () => {
+            log('✓ Audio can start playing', 'success');
+        });
+
+        audio.addEventListener('canplaythrough', () => {
+            log('✓ Audio can play through without buffering', 'success');
+        });
+
+        audio.addEventListener('playing', () => {
+            log('▶ Audio started playing', 'success');
+            updateStatus();
+        });
+
+        audio.addEventListener('pause', () => {
+            log('⏸ Audio paused', 'info');
+            updateStatus();
+        });
+
+        audio.addEventListener('ended', () => {
+            log('⏹ Audio finished playing', 'info');
+            updateStatus();
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            updateStatus();
+        });
+
+        audio.addEventListener('error', (e) => {
+            log('✗ Audio error: ' + (audio.error ? audio.error.message : 'Unknown error'), 'error');
+            log('Error code: ' + (audio.error ? audio.error.code : 'Unknown'), 'error');
+        });
+
+        audio.addEventListener('stalled', () => {
+            log('⚠ Audio loading stalled', 'error');
+        });
+
+        audio.addEventListener('suspend', () => {
+            log('⚠ Audio loading suspended', 'info');
+        });
+
+        // Same for native audio
+        nativeAudio.addEventListener('loadedmetadata', () => {
+            log('[Native] Audio metadata loaded successfully', 'success');
+        });
+
+        nativeAudio.addEventListener('error', (e) => {
+            log('[Native] Audio error: ' + (nativeAudio.error ? nativeAudio.error.message : 'Unknown error'), 'error');
+        });
+
+        // Initial log
+        log('Page loaded. Audio element created.', 'info');
+        log('Audio source: audio/cribconnects-voiceover.mp3', 'info');
+
+        // Check protocol
+        const protocol = window.location.protocol;
+        if (protocol === 'file:') {
+            log('⚠ WARNING: Using file:// protocol. Audio may not work properly!', 'error');
+            log('Please use a local web server (e.g., python -m http.server)', 'error');
+        } else {
+            log(`✓ Using ${protocol} protocol - Good!`, 'success');
+        }
+    </script>
+</body>
+</html>

@@ -16,15 +16,39 @@ let timerInterval = null;
  * Initialize the application
  */
 function init() {
+    console.log('🎬 Initializing presentation...');
+
     // Check if audio is available
     audioPlayer.addEventListener('loadedmetadata', () => {
         hasAudio = true;
-        console.log('Audio geladen en klaar!');
+        console.log('✅ Audio loaded successfully!');
+        console.log(`📊 Duration: ${audioPlayer.duration.toFixed(2)} seconds`);
     });
 
-    audioPlayer.addEventListener('error', () => {
+    audioPlayer.addEventListener('canplay', () => {
+        console.log('✅ Audio can start playing');
+    });
+
+    audioPlayer.addEventListener('error', (e) => {
         hasAudio = false;
-        console.log('Geen audio beschikbaar - gebruik timer fallback');
+        console.error('❌ Audio error:', audioPlayer.error);
+        console.log('⚠️ Falling back to timer mode');
+    });
+
+    audioPlayer.addEventListener('loadstart', () => {
+        console.log('📥 Started loading audio...');
+    });
+
+    audioPlayer.addEventListener('progress', () => {
+        console.log('📊 Loading audio...');
+    });
+
+    audioPlayer.addEventListener('play', () => {
+        console.log('▶️ Audio started playing');
+    });
+
+    audioPlayer.addEventListener('pause', () => {
+        console.log('⏸️ Audio paused');
     });
 
     // Event listeners
@@ -40,7 +64,9 @@ function init() {
     sections[0].classList.add('active');
 
     // Auto-start after 1 second
+    console.log('⏳ Auto-starting in 1 second...');
     setTimeout(() => {
+        console.log('🚀 Auto-starting presentation...');
         togglePlay();
     }, 1000);
 }
@@ -52,19 +78,26 @@ function togglePlay() {
     if (isPlaying) {
         if (hasAudio) {
             audioPlayer.pause();
+            console.log('⏸️ Pausing audio playback');
         } else {
             stopTimer();
+            console.log('⏸️ Stopping timer');
         }
         playBtn.textContent = '▶';
         isPlaying = false;
     } else {
         if (hasAudio) {
+            console.log('▶️ Attempting to play audio...');
             audioPlayer.play().catch(err => {
-                console.log('Audio play geblokkeerd, gebruik timer:', err);
+                console.error('❌ Audio play blocked by browser!', err);
+                console.log('⚠️ This is usually due to browser autoplay policy');
+                console.log('💡 Solution: Click the play button manually');
+                console.log('🔄 Falling back to timer mode');
                 hasAudio = false;
                 startTimer();
             });
         } else {
+            console.log('⏱️ Starting timer mode (no audio available)');
             startTimer();
         }
         playBtn.textContent = '⏸';
