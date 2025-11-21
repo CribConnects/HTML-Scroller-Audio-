@@ -130,14 +130,14 @@
     <!-- Progress Bar -->
     <div class="progress-bar" id="progressBar"></div>
 
-    <!-- Audio Element -->
-    <audio id="audioPlayer" preload="auto">
+    <!-- Audio Element - Not needed, video has audio built-in -->
+    <!-- <audio id="audioPlayer" preload="auto">
         <source src="audio/cribconnects-voiceover.mp3" type="audio/mpeg">
-    </audio>
+    </audio> -->
 
-    <!-- Video Ballon -->
+    <!-- Video Ballon (met audio!) -->
     <div id="videoBallon">
-        <video id="videoPlayer" muted playsinline preload="auto">
+        <video id="videoPlayer" playsinline preload="auto">
             <source src="video/fullsizerender.mp4" type="video/mp4">
             <source src="video/fullsizerender.mov" type="video/quicktime">
             Your browser does not support the video tag.
@@ -341,7 +341,8 @@
 
     <!-- JavaScript -->
     <script>
-        const audioPlayer = document.getElementById('audioPlayer');
+        // Audio player not needed - video has built-in audio
+        // const audioPlayer = document.getElementById('audioPlayer');
         const videoPlayer = document.getElementById('videoPlayer');
         const videoBallon = document.getElementById('videoBallon');
         const playBtn = document.getElementById('playBtn');
@@ -359,80 +360,45 @@
         let simulatedTime = 0;
         let timerInterval = null;
 
-        // Initialize audio and video loading immediately when page loads
+        // Initialize video (with audio!) loading immediately when page loads
         function initMedia() {
-            console.log('🎬 Pre-loading audio and video...');
+            console.log('🎬 Pre-loading video with audio...');
 
-            // Audio events
-            audioPlayer.addEventListener('loadedmetadata', () => {
-                console.log('✅ Audio metadata loaded!');
-                console.log(`📊 Audio duration: ${audioPlayer.duration.toFixed(2)} seconds`);
-            });
-
-            audioPlayer.addEventListener('canplay', () => {
-                console.log('✅ Audio can start playing');
-            });
-
-            audioPlayer.addEventListener('canplaythrough', () => {
-                hasAudio = true;
-                audioReady = true;
-                console.log('✅ Audio fully loaded and ready!');
-            });
-
-            audioPlayer.addEventListener('error', (e) => {
-                hasAudio = false;
-                audioReady = false;
-                console.error('❌ Audio error:', audioPlayer.error);
-                console.log('⚠️ Will fall back to timer mode');
-            });
-
-            audioPlayer.addEventListener('play', () => {
-                console.log('▶️ Audio started playing');
-                // Synchronize video
-                if (hasVideo && videoReady) {
-                    videoPlayer.play().catch(err => console.log('Video play failed:', err));
-                    videoBallon.classList.add('show');
-                }
-            });
-
-            audioPlayer.addEventListener('pause', () => {
-                console.log('⏸️ Audio paused');
-                // Synchronize video
-                if (hasVideo) {
-                    videoPlayer.pause();
-                }
-            });
-
-            audioPlayer.addEventListener('timeupdate', () => updateSection());
-            audioPlayer.addEventListener('ended', onMediaEnded);
-
-            // Video events
+            // Video events (primary media source with audio!)
             videoPlayer.addEventListener('loadedmetadata', () => {
                 console.log('✅ Video metadata loaded!');
                 console.log(`📊 Video duration: ${videoPlayer.duration.toFixed(2)} seconds`);
+                hasVideo = true;
             });
 
             videoPlayer.addEventListener('canplaythrough', () => {
                 hasVideo = true;
                 videoReady = true;
-                console.log('✅ Video fully loaded and ready!');
+                audioReady = true; // Video bevat de audio!
+                console.log('✅ Video fully loaded and ready (with audio)!');
+            });
+
+            videoPlayer.addEventListener('play', () => {
+                console.log('▶️ Video started playing (with audio)');
+                videoBallon.classList.add('show');
+            });
+
+            videoPlayer.addEventListener('pause', () => {
+                console.log('⏸️ Video paused');
             });
 
             videoPlayer.addEventListener('error', (e) => {
                 hasVideo = false;
                 videoReady = false;
-                console.log('⚠️ No video available (dit is OK, presentatie werkt nog steeds)');
+                audioReady = false;
+                console.error('❌ Video error:', videoPlayer.error);
+                console.log('⚠️ Will fall back to timer mode');
             });
 
-            // Keep video and audio synchronized
-            audioPlayer.addEventListener('timeupdate', () => {
-                if (hasVideo && Math.abs(videoPlayer.currentTime - audioPlayer.currentTime) > 0.3) {
-                    videoPlayer.currentTime = audioPlayer.currentTime;
-                }
-            });
+            videoPlayer.addEventListener('timeupdate', () => updateSection());
+            videoPlayer.addEventListener('ended', onMediaEnded);
 
-            // Try to preload both
-            audioPlayer.load();
+            // Try to preload video
             videoPlayer.load();
         }
 
@@ -478,9 +444,9 @@
 
         function togglePlay() {
             if (isPlaying) {
-                if (hasAudio && audioReady) {
-                    audioPlayer.pause();
-                    console.log('⏸️ Pausing audio playback');
+                if (hasVideo && videoReady) {
+                    videoPlayer.pause();
+                    console.log('⏸️ Pausing video playback');
                 } else {
                     stopTimer();
                     console.log('⏸️ Stopping timer');
@@ -488,55 +454,56 @@
                 playBtn.textContent = '▶';
                 isPlaying = false;
             } else {
-                if (hasAudio && audioReady) {
-                    console.log('▶️ Attempting to play audio...');
-                    console.log(`Current audio state - readyState: ${audioPlayer.readyState}, paused: ${audioPlayer.paused}`);
+                if (hasVideo && videoReady) {
+                    console.log('▶️ Attempting to play video (with audio)...');
+                    console.log(`Current video state - readyState: ${videoPlayer.readyState}, paused: ${videoPlayer.paused}`);
 
                     // Reset to beginning if needed
-                    if (audioPlayer.currentTime >= audioPlayer.duration) {
-                        audioPlayer.currentTime = 0;
+                    if (videoPlayer.currentTime >= videoPlayer.duration) {
+                        videoPlayer.currentTime = 0;
                     }
 
-                    const playPromise = audioPlayer.play();
+                    const playPromise = videoPlayer.play();
                     if (playPromise !== undefined) {
                         playPromise.then(() => {
-                            console.log('✅ Audio playing successfully!');
+                            console.log('✅ Video playing successfully (with audio)!');
                             playBtn.textContent = '⏸';
                             isPlaying = true;
                         }).catch(err => {
-                            console.error('❌ Audio play failed!', err);
+                            console.error('❌ Video play failed!', err);
                             console.log('🔄 Falling back to timer mode');
-                            hasAudio = false;
+                            hasVideo = false;
+                            videoReady = false;
                             audioReady = false;
                             startTimer();
                             playBtn.textContent = '⏸';
                             isPlaying = true;
                         });
                     }
-                } else if (hasAudio && !audioReady) {
-                    console.log('⏳ Audio is loading, waiting for it to be ready...');
-                    // Wait for audio to be ready
+                } else if (hasVideo && !videoReady) {
+                    console.log('⏳ Video is loading, waiting for it to be ready...');
+                    // Wait for video to be ready
                     const checkReady = setInterval(() => {
-                        if (audioReady) {
+                        if (videoReady) {
                             clearInterval(checkReady);
-                            console.log('✅ Audio is now ready, starting playback');
+                            console.log('✅ Video is now ready, starting playback');
                             togglePlay();
                         }
                     }, 100);
 
                     // Fallback to timer after 3 seconds
                     setTimeout(() => {
-                        if (!audioReady) {
+                        if (!videoReady) {
                             clearInterval(checkReady);
-                            console.log('⚠️ Audio took too long to load, using timer mode');
-                            hasAudio = false;
+                            console.log('⚠️ Video took too long to load, using timer mode');
+                            hasVideo = false;
                             startTimer();
                             playBtn.textContent = '⏸';
                             isPlaying = true;
                         }
                     }, 3000);
                 } else {
-                    console.log('⏱️ Starting timer mode (no audio available)');
+                    console.log('⏱️ Starting timer mode (no video available)');
                     startTimer();
                     playBtn.textContent = '⏸';
                     isPlaying = true;
@@ -545,8 +512,8 @@
         }
 
         function toggleMute() {
-            audioPlayer.muted = !audioPlayer.muted;
-            muteBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
+            videoPlayer.muted = !videoPlayer.muted;
+            muteBtn.textContent = videoPlayer.muted ? '🔇' : '🔊';
         }
 
         function startTimer() {
@@ -573,11 +540,11 @@
         }
 
         function updateSection(time = null) {
-            const currentTime = time !== null ? time : audioPlayer.currentTime;
-            const audioDuration = hasAudio ? audioPlayer.duration : 106;
+            const currentTime = time !== null ? time : videoPlayer.currentTime;
+            const videoDuration = hasVideo ? videoPlayer.duration : 106;
 
-            if (audioDuration > 0) {
-                progressBar.style.width = (currentTime / audioDuration * 100) + '%';
+            if (videoDuration > 0) {
+                progressBar.style.width = (currentTime / videoDuration * 100) + '%';
             }
 
             sections.forEach((section, index) => {
