@@ -7,7 +7,7 @@ cribconnects-voiceover.mp3
 
 Required specifications:
 - Format: MP3
-- Duration: 80 seconds (1 minute 20 seconds)
+- Duration: 79 seconds (1 minute 19 seconds)
 - Quality: Recommended 128kbps or higher
 
 Timing breakdown for your voice-over:
@@ -15,7 +15,7 @@ Timing breakdown for your voice-over:
 - 0:08-0:25 (17 sec) - Het Probleem (The Problem)
 - 0:25-0:45 (20 sec) - Onze Strategie (Our Strategy)
 - 0:45-1:05 (20 sec) - Onze Aanpak (Our Approach)
-- 1:05-1:20 (15 sec) - Call to Action
+- 1:05-1:19 (14 sec) - Call to Action
 
 Once you have your audio file:
 1. Delete this placeholder file

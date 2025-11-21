@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test CribConnects Presentation</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .warning { background: #fff3cd; color: #856404; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        button {
+            background: #88D8E8;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #66C5D6;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-box">
+        <h1>🎬 CribConnects Presentation - Test Page</h1>
+        <p>Use this page to verify your setup before presenting.</p>
+    </div>
+
+    <div class="test-box">
+        <h2>📋 Checklist</h2>
+        <div id="checklist"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>🎵 Audio Status</h2>
+        <div id="audioStatus"></div>
+        <audio id="testAudio" preload="auto">
+            <source src="audio/cribconnects-voiceover.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <div class="test-box">
+        <h2>🚀 Ready to Present?</h2>
+        <button onclick="window.location.href='index.html'">Open Presentation</button>
+        <button onclick="runTests()">Re-run Tests</button>
+    </div>
+
+    <script>
+        const checklist = [
+            { name: 'HTML File', file: 'index.html' },
+            { name: 'CSS File', file: 'css/styles.css' },
+            { name: 'JavaScript File', file: 'js/app.js' },
+            { name: 'Audio File', file: 'audio/cribconnects-voiceover.mp3' }
+        ];
+
+        function checkFileExists(url) {
+            return fetch(url, { method: 'HEAD' })
+                .then(response => response.ok)
+                .catch(() => false);
+        }
+
+        async function runTests() {
+            const checklistDiv = document.getElementById('checklist');
+            checklistDiv.innerHTML = '<p>Running tests...</p>';
+
+            let results = '<ul style="list-style: none; padding: 0;">';
+
+            for (const item of checklist) {
+                const exists = await checkFileExists(item.file);
+                const icon = exists ? '✅' : '❌';
+                results += `<li style="padding: 5px 0;">${icon} ${item.name}: ${item.file}</li>`;
+            }
+
+            results += '</ul>';
+            checklistDiv.innerHTML = results;
+
+            // Test audio
+            const audio = document.getElementById('testAudio');
+            const audioStatusDiv = document.getElementById('audioStatus');
+
+            audio.addEventListener('loadedmetadata', () => {
+                const duration = Math.floor(audio.duration);
+                audioStatusDiv.innerHTML = `
+                    <div class="status success">
+                        ✅ Audio file found!<br>
+                        Duration: ${duration} seconds<br>
+                        Expected: 79 seconds
+                    </div>
+                    ${duration !== 79 ? '<div class="status warning">⚠️ Note: Audio duration differs from expected 79 seconds</div>' : ''}
+                `;
+            });
+
+            audio.addEventListener('error', () => {
+                audioStatusDiv.innerHTML = `
+                    <div class="status warning">
+                        ⚠️ No audio file detected<br><br>
+                        <strong>To add your audio:</strong><br>
+                        1. Place your MP3 file in the <code>audio/</code> folder<br>
+                        2. Name it exactly: <code>cribconnects-voiceover.mp3</code><br>
+                        3. Refresh this page<br><br>
+                        <em>Note: The presentation will still work using timer mode!</em>
+                    </div>
+                `;
+            });
+
+            audio.load();
+        }
+
+        // Run tests on page load
+        runTests();
+    </script>
+</body>
+</html>

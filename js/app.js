@@ -90,8 +90,8 @@ function startTimer() {
         simulatedTime += 0.1;
         updateSection(simulatedTime);
 
-        // Stop at the end (80 seconds)
-        if (simulatedTime >= 80) {
+        // Stop at the end (79 seconds)
+        if (simulatedTime >= 79) {
             stopTimer();
             playBtn.textContent = '▶';
             isPlaying = false;
@@ -115,7 +115,7 @@ function stopTimer() {
  */
 function updateSection(time = null) {
     const currentTime = time !== null ? time : audioPlayer.currentTime;
-    const audioDuration = hasAudio ? audioPlayer.duration : 80;
+    const audioDuration = hasAudio ? audioPlayer.duration : 79;
 
     // Update progress bar
     if (audioDuration > 0) {

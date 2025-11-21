@@ -24,7 +24,7 @@ HTML-Scroller-Audio-/
 2. **Bestandsnaam**: `cribconnects-voiceover.mp3` (exact deze naam)
 3. **Specificaties**:
    - Format: MP3
-   - Duur: 80 seconden (1:20)
+   - Duur: 79 seconden (1:19)
    - Aanbevolen kwaliteit: 128kbps of hoger
 
 ### Timing Guide voor Voice-over
@@ -37,7 +37,7 @@ Uw voice-over moet de volgende secties dekken:
 | 0:08-0:25 | 17 sec | Het Probleem | Huidige situatie beschrijven |
 | 0:25-0:45 | 20 sec | Onze Strategie | Strategische aanpak uitleggen |
 | 0:45-1:05 | 20 sec | Onze Aanpak | Concrete stappen presenteren |
-| 1:05-1:20 | 15 sec | Call to Action | Afsluiting en call to action |
+| 1:05-1:19 | 14 sec | Call to Action | Afsluiting en call to action |
 
 ### Zonder Audio
 
@@ -165,7 +165,7 @@ Getest en werkend in:
 ### Onze Aanpak (0:45-1:05)
 "Onze aanpak bestaat uit vier stappen: Een kick-off workshop om te enthousiasmeren, hands-on coaching op de werkvloer, continue helpdesk support, en viering van successen om te meten en optimaliseren."
 
-### Call to Action (1:05-1:20)
+### Call to Action (1:05-1:19)
 "Van licenties naar cultuurverandering, met praktische coaching en meetbare resultaten. Klaar om te beginnen? Plan een kennismaking."
 
 ## 🐛 Troubleshooting
