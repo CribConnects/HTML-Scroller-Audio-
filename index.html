@@ -174,6 +174,11 @@
             position: relative;
         }
 
+        .expandable-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 50px rgba(136, 216, 232, 0.3);
+        }
+
         .expandable-card::after {
             content: '👆 Klik voor meer info';
             position: absolute;
@@ -190,6 +195,16 @@
         .expandable-card:hover::after {
             opacity: 1;
             background: rgba(136, 216, 232, 0.3);
+        }
+
+        /* Interactive cards (non-expandable) */
+        .interactive-card {
+            transition: all 0.3s ease;
+        }
+
+        .interactive-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 50px rgba(136, 216, 232, 0.4);
         }
 
         .expandable-card .extra-content {
@@ -330,7 +345,7 @@
                     </div>
                 </div>
 
-                <div class="glass-strong border-l-4 rounded-2xl p-8 shadow-xl max-w-3xl mx-auto" style="border-color: #FF6B6B;">
+                <div class="glass-strong border-l-4 rounded-2xl p-8 shadow-xl max-w-3xl mx-auto interactive-card" style="border-color: #FF6B6B;">
                     <h3 class="text-2xl font-bold text-gray-900 sans mb-4">Het Resultaat</h3>
                     <p class="text-lg text-gray-700 sans font-light leading-relaxed">
                         Bij <strong>implementatie gebeurt er vrij weinig</strong>. De tools worden nauwelijks gebruikt en de ROI blijft uit. Slechts 20-30% van de medewerkers gebruikt AI actief.
@@ -402,7 +417,7 @@
                     </div>
                 </div>
 
-                <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-xl text-center max-w-4xl mx-auto">
+                <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-xl text-center max-w-4xl mx-auto interactive-card">
                     <h3 class="text-2xl font-bold text-gray-900 sans mb-4">Praktische Coaching op de Werkvloer</h3>
                     <p class="text-lg text-gray-700 sans font-light leading-relaxed">
                         We spitten workflows uit en helpen AI écht te integreren. Niet vanuit techniek, maar vanuit eigen behoeften. Onze coaches werken hands-on met teams om concrete use cases te identificeren en implementeren.
@@ -507,9 +522,9 @@
                     <p class="text-xl font-light mb-10 text-gray-700 sans leading-relaxed">
                         Van licenties naar cultuurverandering met praktische coaching en meetbare resultaten.
                     </p>
-                    <button class="px-12 py-5 text-white rounded-xl font-semibold hover:shadow-2xl transition-all sans shadow-lg text-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                    <a href="mailto:info@cribconnects.com?subject=Kennismaking CribConnects x CPI AI Strategie&body=Beste CribConnects team,%0D%0A%0D%0AIk ben geïnteresseerd in een kennismaking over jullie AI strategie aanpak.%0D%0A%0D%0AMet vriendelijke groet," class="inline-block px-12 py-5 text-white rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all sans shadow-lg text-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
                         Plan een Kennismaking
-                    </button>
+                    </a>
                 </div>
             </div>
         </section>
