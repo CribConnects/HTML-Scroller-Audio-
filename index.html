@@ -69,6 +69,50 @@
             margin-bottom: 40px;
             opacity: 0.9;
         }
+
+        /* Video Ballon Styling */
+        #videoBallon {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            overflow: hidden;
+            z-index: 999;
+            box-shadow: 0 10px 40px rgba(136, 216, 232, 0.4);
+            border: 6px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%) border-box;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        #videoBallon.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        #videoBallon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 50px rgba(136, 216, 232, 0.6);
+        }
+
+        #videoBallon video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            #videoBallon {
+                width: 200px;
+                height: 200px;
+                bottom: 100px;
+                right: 20px;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-white via-cyan-50/30 to-blue-50/40">
@@ -90,6 +134,15 @@
     <audio id="audioPlayer" preload="auto">
         <source src="audio/cribconnects-voiceover.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- Video Ballon -->
+    <div id="videoBallon">
+        <video id="videoPlayer" muted playsinline preload="auto">
+            <source src="video/fullsizerender.mp4" type="video/mp4">
+            <source src="video/fullsizerender.mov" type="video/quicktime">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 
     <!-- Controls -->
     <div class="controls">
@@ -289,6 +342,8 @@
     <!-- JavaScript -->
     <script>
         const audioPlayer = document.getElementById('audioPlayer');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoBallon = document.getElementById('videoBallon');
         const playBtn = document.getElementById('playBtn');
         const muteBtn = document.getElementById('muteBtn');
         const progressBar = document.getElementById('progressBar');
@@ -299,17 +354,19 @@
         let currentSection = 0;
         let hasAudio = false;
         let audioReady = false;
+        let hasVideo = false;
+        let videoReady = false;
         let simulatedTime = 0;
         let timerInterval = null;
 
-        // Initialize audio loading immediately when page loads
-        function initAudio() {
-            console.log('🎬 Pre-loading audio...');
+        // Initialize audio and video loading immediately when page loads
+        function initMedia() {
+            console.log('🎬 Pre-loading audio and video...');
 
-            // Check if audio is available
+            // Audio events
             audioPlayer.addEventListener('loadedmetadata', () => {
                 console.log('✅ Audio metadata loaded!');
-                console.log(`📊 Duration: ${audioPlayer.duration.toFixed(2)} seconds`);
+                console.log(`📊 Audio duration: ${audioPlayer.duration.toFixed(2)} seconds`);
             });
 
             audioPlayer.addEventListener('canplay', () => {
@@ -331,17 +388,52 @@
 
             audioPlayer.addEventListener('play', () => {
                 console.log('▶️ Audio started playing');
+                // Synchronize video
+                if (hasVideo && videoReady) {
+                    videoPlayer.play().catch(err => console.log('Video play failed:', err));
+                    videoBallon.classList.add('show');
+                }
             });
 
             audioPlayer.addEventListener('pause', () => {
                 console.log('⏸️ Audio paused');
+                // Synchronize video
+                if (hasVideo) {
+                    videoPlayer.pause();
+                }
             });
 
             audioPlayer.addEventListener('timeupdate', () => updateSection());
-            audioPlayer.addEventListener('ended', onAudioEnded);
+            audioPlayer.addEventListener('ended', onMediaEnded);
 
-            // Try to preload the audio
+            // Video events
+            videoPlayer.addEventListener('loadedmetadata', () => {
+                console.log('✅ Video metadata loaded!');
+                console.log(`📊 Video duration: ${videoPlayer.duration.toFixed(2)} seconds`);
+            });
+
+            videoPlayer.addEventListener('canplaythrough', () => {
+                hasVideo = true;
+                videoReady = true;
+                console.log('✅ Video fully loaded and ready!');
+            });
+
+            videoPlayer.addEventListener('error', (e) => {
+                hasVideo = false;
+                videoReady = false;
+                console.log('⚠️ No video available (dit is OK, presentatie werkt nog steeds)');
+            });
+
+            // Keep video and audio synchronized
+            audioPlayer.addEventListener('timeupdate', () => {
+                if (hasVideo && Math.abs(videoPlayer.currentTime - audioPlayer.currentTime) > 0.3) {
+                    videoPlayer.currentTime = audioPlayer.currentTime;
+                }
+            });
+
+            // Try to preload both
             audioPlayer.load();
+            videoPlayer.load();
         }
 
         function startPresentation() {
@@ -378,10 +470,10 @@
             sections[0].classList.add('active');
         }
 
-        // Load audio as soon as the page loads
+        // Load audio and video as soon as the page loads
         window.addEventListener('DOMContentLoaded', () => {
-            console.log('📄 Page loaded, initializing audio...');
-            initAudio();
+            console.log('📄 Page loaded, initializing media...');
+            initMedia();
         });
 
         function togglePlay() {
@@ -504,9 +596,11 @@
             });
         }
 
-        function onAudioEnded() {
+        function onMediaEnded() {
             playBtn.textContent = '▶';
             isPlaying = false;
+            // Hide video ballon
+            videoBallon.classList.remove('show');
         }
 
         function handleKeyboard(e) {

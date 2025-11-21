@@ -3,6 +3,14 @@
 # audio/*.wav
 # audio/*.ogg
 
+# Video files (optioneel - video kan ook in repo als < 50MB)
+# video/*.mp4
+# video/*.mov
+# video/*.webm
+
+# Keep placeholders
+!video/PLACE_VIDEO_HERE.txt
+
 # Node.js
 node_modules/
 npm-debug.log*
