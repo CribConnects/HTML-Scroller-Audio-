@@ -113,6 +113,137 @@
                 right: 20px;
             }
         }
+
+        /* Subtitles */
+        #subtitles {
+            position: fixed;
+            bottom: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 20px;
+            max-width: 90%;
+            text-align: center;
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            line-height: 1.4;
+        }
+
+        #subtitles.show {
+            opacity: 1;
+        }
+
+        /* Pop-up Tooltip */
+        .pause-tooltip {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);
+            color: white;
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 10001;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .pause-tooltip.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+
+        .pause-tooltip h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .pause-tooltip p {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .pause-tooltip button {
+            background: white;
+            color: #66C5D6;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .pause-tooltip button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Expandable Card */
+        .expandable-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .expandable-card::after {
+            content: '👆 Klik voor meer info';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 12px;
+            opacity: 0.7;
+            background: rgba(136, 216, 232, 0.2);
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .expandable-card:hover::after {
+            opacity: 1;
+            background: rgba(136, 216, 232, 0.3);
+        }
+
+        .expandable-card .extra-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            margin-top: 0;
+        }
+
+        .expandable-card.expanded .extra-content {
+            max-height: 500px;
+            margin-top: 15px;
+        }
+
+        .expandable-card.expanded::after {
+            content: '👆 Klik om te sluiten';
+        }
+
+        @media (max-width: 768px) {
+            #subtitles {
+                bottom: 140px;
+                font-size: 16px;
+                padding: 12px 20px;
+            }
+
+            .pause-tooltip {
+                width: 90%;
+                max-width: 350px;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-white via-cyan-50/30 to-blue-50/40">
@@ -149,6 +280,16 @@
         ⏳ Video laden...
     </div>
 
+    <!-- Subtitles -->
+    <div id="subtitles"></div>
+
+    <!-- Pause Tooltip -->
+    <div class="pause-tooltip" id="pauseTooltip">
+        <h3>⏸️ Tip!</h3>
+        <p>Zet de video op pauze om deze sectie rustig door te lezen</p>
+        <button onclick="closePauseTooltip()">Begrepen!</button>
+    </div>
+
     <!-- Controls -->
     <div class="controls">
         <button id="muteBtn" class="control-btn" title="Geluid aan/uit">
@@ -182,29 +323,50 @@
                 <h2 class="text-5xl font-bold mb-8 text-gray-900 serif text-center">Het Probleem</h2>
 
                 <div class="grid md:grid-cols-3 gap-6 mb-8">
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg transform hover:scale-105 transition-all">
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
                         <div class="text-5xl mb-4 text-center">💰</div>
                         <h3 class="text-xl font-bold text-gray-900 sans mb-3 text-center">Software Inkopen</h3>
                         <p class="text-gray-600 sans font-light text-center">Bedrijven investeren flink in AI-tools</p>
+                        <div class="extra-content">
+                            <div class="mt-3 pt-3 border-t border-cyan-200/30">
+                                <p class="text-gray-700 sans text-sm leading-relaxed">
+                                    Organisaties kopen dure AI-licenties zoals ChatGPT Enterprise, Copilot, of custom tools. Vaak zonder duidelijk adoptieplan of training.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg transform hover:scale-105 transition-all">
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
                         <div class="text-5xl mb-4 text-center">🔧</div>
                         <h3 class="text-xl font-bold text-gray-900 sans mb-3 text-center">Zelf Bouwen</h3>
                         <p class="text-gray-600 sans font-light text-center">Teams ontwikkelen eigen oplossingen</p>
+                        <div class="extra-content">
+                            <div class="mt-3 pt-3 border-t border-cyan-200/30">
+                                <p class="text-gray-700 sans text-sm leading-relaxed">
+                                    IT-teams bouwen custom AI-oplossingen, maar vaak zonder input van eindgebruikers. Dit leidt tot tools die niet aansluiten bij werkelijke behoeften.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg transform hover:scale-105 transition-all">
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
                         <div class="text-5xl mb-4 text-center">🔑</div>
                         <h3 class="text-xl font-bold text-gray-900 sans mb-3 text-center">Licenties Toekennen</h3>
                         <p class="text-gray-600 sans font-light text-center">Toegang wordt verstrekt</p>
+                        <div class="extra-content">
+                            <div class="mt-3 pt-3 border-t border-cyan-200/30">
+                                <p class="text-gray-700 sans text-sm leading-relaxed">
+                                    Medewerkers krijgen toegang, maar geen begeleiding. Het ontbreekt aan praktische coaching en concrete use cases voor hun dagelijkse werk.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="glass-strong border-l-4 rounded-2xl p-8 shadow-xl max-w-3xl mx-auto" style="border-color: #FF6B6B;">
                     <h3 class="text-2xl font-bold text-gray-900 sans mb-4">Het Resultaat</h3>
                     <p class="text-lg text-gray-700 sans font-light leading-relaxed">
-                        Bij <strong>implementatie gebeurt er vrij weinig</strong>. De tools worden nauwelijks gebruikt.
+                        Bij <strong>implementatie gebeurt er vrij weinig</strong>. De tools worden nauwelijks gebruikt en de ROI blijft uit. Slechts 20-30% van de medewerkers gebruikt AI actief.
                     </p>
                 </div>
             </div>
@@ -216,7 +378,7 @@
                 <h2 class="text-5xl font-bold mb-8 text-gray-900 serif text-center">Onze Strategie</h2>
 
                 <div class="grid md:grid-cols-2 gap-6 mb-8">
-                    <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-lg highlight-box">
+                    <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-lg highlight-box expandable-card" onclick="toggleCard(this)">
                         <div class="w-16 h-16 rounded-xl flex items-center justify-center mb-6 mx-auto shadow-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
                             <span class="text-3xl">🎯</span>
                         </div>
@@ -235,9 +397,16 @@
                                 <span>Mindset verschuiving</span>
                             </li>
                         </ul>
+                        <div class="extra-content">
+                            <div class="mt-4 pt-4 border-t border-cyan-200/30">
+                                <p class="text-gray-700 sans text-sm leading-relaxed">
+                                    <strong>De sleutel:</strong> AI zien als motor voor organisatiebrede transformatie. We helpen teams hun werkwijze opnieuw vormgeven met AI als enabler, niet als doel op zich.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-lg">
+                    <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
                         <div class="w-16 h-16 rounded-xl flex items-center justify-center mb-6 mx-auto shadow-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
                             <span class="text-3xl">👥</span>
                         </div>
@@ -256,13 +425,20 @@
                                 <span>Focus op productieve taken</span>
                             </li>
                         </ul>
+                        <div class="extra-content">
+                            <div class="mt-4 pt-4 border-t border-cyan-200/30">
+                                <p class="text-gray-700 sans text-sm leading-relaxed">
+                                    <strong>Het verschil:</strong> We beginnen bij de mens, niet bij de technologie. AI moet repetitief werk wegnemen zodat medewerkers kunnen focussen op wat ze leuk vinden.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-xl text-center max-w-4xl mx-auto">
                     <h3 class="text-2xl font-bold text-gray-900 sans mb-4">Praktische Coaching op de Werkvloer</h3>
                     <p class="text-lg text-gray-700 sans font-light leading-relaxed">
-                        We spitten workflows uit en helpen AI écht te integreren. Niet vanuit techniek, maar vanuit eigen behoeften.
+                        We spitten workflows uit en helpen AI écht te integreren. Niet vanuit techniek, maar vanuit eigen behoeften. Onze coaches werken hands-on met teams om concrete use cases te identificeren en implementeren.
                     </p>
                 </div>
             </div>
@@ -274,50 +450,78 @@
                 <h2 class="text-5xl font-bold mb-8 text-gray-900 serif text-center">Onze Aanpak</h2>
 
                 <div class="space-y-6">
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg">
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
                         <div class="flex items-center gap-6">
                             <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
                                 ✨
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-xl font-bold text-gray-900 sans mb-2">01 - Kick-off Workshop</h3>
                                 <p class="text-gray-600 sans font-light">Enthousiasmeren en de basis leggen</p>
                             </div>
                         </div>
+                        <div class="extra-content">
+                            <div class="mt-4 pt-4 border-t border-cyan-200/30 ml-20">
+                                <p class="text-gray-700 sans text-sm leading-relaxed">
+                                    Interactieve sessie waarin we de AI-kansen voor uw organisatie in kaart brengen. We tonen concrete voorbeelden en inspireren teams met quick wins.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg">
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
                         <div class="flex items-center gap-6">
                             <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
                                 👥
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-xl font-bold text-gray-900 sans mb-2">02 - Hands-on Coaching</h3>
                                 <p class="text-gray-600 sans font-light">Begeleiding op de werkvloer</p>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg">
-                        <div class="flex items-center gap-6">
-                            <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
-                                💬
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900 sans mb-2">03 - Helpdesk & Support</h3>
-                                <p class="text-gray-600 sans font-light">Continue ondersteuning</p>
+                        <div class="extra-content">
+                            <div class="mt-4 pt-4 border-t border-cyan-200/30 ml-20">
+                                <p class="text-gray-700 sans text-sm leading-relaxed">
+                                    Onze coaches werken naast uw medewerkers, analyseren workflows en helpen AI direct toe te passen. Niet in theorie, maar in de praktijk van alledag.
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg">
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
+                        <div class="flex items-center gap-6">
+                            <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                                💬
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-900 sans mb-2">03 - Helpdesk & Support</h3>
+                                <p class="text-gray-600 sans font-light">Continue ondersteuning</p>
+                            </div>
+                        </div>
+                        <div class="extra-content">
+                            <div class="mt-4 pt-4 border-t border-cyan-200/30 ml-20">
+                                <p class="text-gray-700 sans text-sm leading-relaxed">
+                                    Dedicated Slack-kanaal en wekelijkse Q&A sessies. Medewerkers kunnen altijd terecht met vragen, ideën of uitdagingen bij AI-toepassing.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg expandable-card" onclick="toggleCard(this)">
                         <div class="flex items-center gap-6">
                             <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
                                 🏆
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-xl font-bold text-gray-900 sans mb-2">04 - Viering van Successen</h3>
                                 <p class="text-gray-600 sans font-light">Meten, vieren en optimaliseren</p>
+                            </div>
+                        </div>
+                        <div class="extra-content">
+                            <div class="mt-4 pt-4 border-t border-cyan-200/30 ml-20">
+                                <p class="text-gray-700 sans text-sm leading-relaxed">
+                                    We meten impact (tijdsbesparing, productiviteit, tevredenheid), delen successen breed en optimaliseren continue. Vieren van quick wins motiveert het hele team.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -658,6 +862,10 @@
                     section.classList.remove('active');
                 }
             });
+
+            // Update subtitles and check tooltip triggers
+            updateSubtitles(currentTime);
+            checkTooltipTriggers(currentTime);
         }
 
         function onMediaEnded() {
@@ -674,6 +882,113 @@
             } else if (e.key === 'm' || e.key === 'M') {
                 toggleMute();
             }
+        }
+
+        // ===== INTERACTIVITY FUNCTIONS =====
+
+        // Toggle expandable cards
+        function toggleCard(card) {
+            const wasExpanded = card.classList.contains('expanded');
+
+            // Close all other cards
+            document.querySelectorAll('.expandable-card.expanded').forEach(c => {
+                if (c !== card) c.classList.remove('expanded');
+            });
+
+            // Toggle this card
+            card.classList.toggle('expanded');
+
+            // Pause video if expanding to give time to read
+            if (!wasExpanded && isPlaying) {
+                console.log('📖 Card expanded, suggesting pause...');
+                setTimeout(() => showPauseTooltip(), 500);
+            }
+        }
+
+        // Pause tooltip functions
+        const pauseTooltip = document.getElementById('pauseTooltip');
+        let pauseTooltipTimeout = null;
+        let shownTooltips = new Set();
+
+        function showPauseTooltip() {
+            // Don't show if already shown recently
+            if (pauseTooltip.classList.contains('show')) return;
+
+            pauseTooltip.classList.add('show');
+
+            // Auto-hide after 5 seconds
+            clearTimeout(pauseTooltipTimeout);
+            pauseTooltipTimeout = setTimeout(() => {
+                closePauseTooltip();
+            }, 5000);
+        }
+
+        function closePauseTooltip() {
+            pauseTooltip.classList.remove('show');
+            clearTimeout(pauseTooltipTimeout);
+        }
+
+        // Auto-show tooltips at specific times
+        const tooltipTriggers = [
+            { time: 25, id: 'problem' },    // During problem section
+            { time: 50, id: 'strategy' },   // During strategy section
+            { time: 75, id: 'approach' }    // During approach section
+        ];
+
+        // ===== SUBTITLES SYSTEM =====
+
+        const subtitles = document.getElementById('subtitles');
+        let currentSubtitle = '';
+
+        const subtitleData = [
+            // Hero (0-11s)
+            { start: 0, end: 5, text: "Welkom bij CribConnects x CPI" },
+            { start: 5, end: 11, text: "Van licenties naar echte cultuurverandering" },
+
+            // Problem (11-34s)
+            { start: 11, end: 16, text: "Bedrijven investeren massaal in AI-tools" },
+            { start: 16, end: 22, text: "Teams bouwen eigen oplossingen" },
+            { start: 22, end: 28, text: "Licenties worden toegekend..." },
+            { start: 28, end: 34, text: "Maar de adoptie blijft achter" },
+
+            // Strategy (34-61s)
+            { start: 34, end: 40, text: "Wij zien AI als kans voor transformatie" },
+            { start: 40, end: 47, text: "Het gaat om cultuurverandering, niet alleen technologie" },
+            { start: 47, end: 54, text: "We beginnen bij de mens en hun behoeften" },
+            { start: 54, end: 61, text: "Praktische coaching op de werkvloer is de sleutel" },
+
+            // Approach (61-88s)
+            { start: 61, end: 67, text: "Stap 1: Kick-off workshop met quick wins" },
+            { start: 67, end: 73, text: "Stap 2: Hands-on coaching naast medewerkers" },
+            { start: 73, end: 80, text: "Stap 3: Continue support via Slack en Q&A" },
+            { start: 80, end: 88, text: "Stap 4: Successen meten, vieren en delen" },
+
+            // CTA (88-106s)
+            { start: 88, end: 97, text: "Klaar om AI écht te integreren?" },
+            { start: 97, end: 106, text: "Plan een kennismaking met ons team" }
+        ];
+
+        function updateSubtitles(currentTime) {
+            const subtitle = subtitleData.find(s => currentTime >= s.start && currentTime < s.end);
+
+            if (subtitle && subtitle.text !== currentSubtitle) {
+                currentSubtitle = subtitle.text;
+                subtitles.textContent = subtitle.text;
+                subtitles.classList.add('show');
+            } else if (!subtitle && currentSubtitle) {
+                currentSubtitle = '';
+                subtitles.classList.remove('show');
+            }
+        }
+
+        function checkTooltipTriggers(currentTime) {
+            tooltipTriggers.forEach(trigger => {
+                // Show tooltip if we're at the trigger time and haven't shown it yet
+                if (currentTime >= trigger.time && currentTime < trigger.time + 0.5 && !shownTooltips.has(trigger.id)) {
+                    shownTooltips.add(trigger.id);
+                    showPauseTooltip();
+                }
+            });
         }
     </script>
 </body>
