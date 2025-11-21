@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CribConnects AI Strategie - Presentatie met Voice-over</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-white via-cyan-50/30 to-blue-50/40">
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Audio Element -->
+    <audio id="audioPlayer" preload="auto">
+        <source src="audio/cribconnects-voiceover.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Controls -->
+    <div class="controls">
+        <button id="muteBtn" class="control-btn" title="Geluid aan/uit">
+            🔊
+        </button>
+        <button id="playBtn" class="control-btn" title="Play/Pause (Spatie)">
+            ▶
+        </button>
+    </div>
+
+    <!-- Content -->
+    <div id="content">
+        <!-- Hero - 0:00-0:08 (8 sec) -->
+        <section class="demo-section min-h-screen flex items-center justify-center px-8 pt-20" data-start="0" data-end="8">
+            <div class="max-w-5xl mx-auto text-center">
+                <div class="glass-strong rounded-3xl p-12 border border-cyan-200/50 shadow-2xl">
+                    <h1 class="text-6xl md:text-7xl font-bold mb-8 text-gray-900 serif leading-tight">
+                        CribConnects<br/>
+                        <span style="color: #88D8E8;">AI Strategie</span>
+                    </h1>
+                    <p class="text-2xl text-gray-700 sans font-light leading-relaxed">
+                        Van licenties naar cultuurverandering
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problem - 0:08-0:25 (17 sec) -->
+        <section class="demo-section min-h-screen flex items-center justify-center px-8 py-20" data-start="8" data-end="25">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-5xl font-bold mb-8 text-gray-900 serif text-center">Het Probleem</h2>
+
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg transform hover:scale-105 transition-all">
+                        <div class="text-5xl mb-4 text-center">💰</div>
+                        <h3 class="text-xl font-bold text-gray-900 sans mb-3 text-center">Software Inkopen</h3>
+                        <p class="text-gray-600 sans font-light text-center">Bedrijven investeren flink in AI-tools</p>
+                    </div>
+
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg transform hover:scale-105 transition-all">
+                        <div class="text-5xl mb-4 text-center">🔧</div>
+                        <h3 class="text-xl font-bold text-gray-900 sans mb-3 text-center">Zelf Bouwen</h3>
+                        <p class="text-gray-600 sans font-light text-center">Teams ontwikkelen eigen oplossingen</p>
+                    </div>
+
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg transform hover:scale-105 transition-all">
+                        <div class="text-5xl mb-4 text-center">🔑</div>
+                        <h3 class="text-xl font-bold text-gray-900 sans mb-3 text-center">Licenties Toekennen</h3>
+                        <p class="text-gray-600 sans font-light text-center">Toegang wordt verstrekt</p>
+                    </div>
+                </div>
+
+                <div class="glass-strong border-l-4 rounded-2xl p-8 shadow-xl max-w-3xl mx-auto" style="border-color: #FF6B6B;">
+                    <h3 class="text-2xl font-bold text-gray-900 sans mb-4">Het Resultaat</h3>
+                    <p class="text-lg text-gray-700 sans font-light leading-relaxed">
+                        Bij <strong>implementatie gebeurt er vrij weinig</strong>. De tools worden nauwelijks gebruikt.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategy - 0:25-0:45 (20 sec) -->
+        <section class="demo-section min-h-screen flex items-center justify-center px-8 py-20" data-start="25" data-end="45">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-5xl font-bold mb-8 text-gray-900 serif text-center">Onze Strategie</h2>
+
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-lg highlight-box">
+                        <div class="w-16 h-16 rounded-xl flex items-center justify-center mb-6 mx-auto shadow-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                            <span class="text-3xl">🎯</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 sans mb-4 text-center">AI als Kans</h3>
+                        <ul class="space-y-3 text-gray-700 sans">
+                            <li class="flex items-center gap-3">
+                                <span style="color: #66C5D6;">✓</span>
+                                <span>Workforce moderniseren</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span style="color: #66C5D6;">✓</span>
+                                <span>Cultuurverandering</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span style="color: #66C5D6;">✓</span>
+                                <span>Mindset verschuiving</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-lg">
+                        <div class="w-16 h-16 rounded-xl flex items-center justify-center mb-6 mx-auto shadow-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                            <span class="text-3xl">👥</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 sans mb-4 text-center">Menselijk Perspectief</h3>
+                        <ul class="space-y-3 text-gray-700 sans">
+                            <li class="flex items-center gap-3">
+                                <span style="color: #66C5D6;">✓</span>
+                                <span>Werk leuker maken</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span style="color: #66C5D6;">✓</span>
+                                <span>Ruimte voor creativiteit</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span style="color: #66C5D6;">✓</span>
+                                <span>Focus op productieve taken</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="glass-strong rounded-2xl p-10 border border-cyan-200/50 shadow-xl text-center max-w-4xl mx-auto">
+                    <h3 class="text-2xl font-bold text-gray-900 sans mb-4">Praktische Coaching op de Werkvloer</h3>
+                    <p class="text-lg text-gray-700 sans font-light leading-relaxed">
+                        We spitten workflows uit en helpen AI écht te integreren. Niet vanuit techniek, maar vanuit eigen behoeften.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Approach - 0:45-1:05 (20 sec) -->
+        <section class="demo-section min-h-screen flex items-center justify-center px-8 py-20" data-start="45" data-end="65">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-5xl font-bold mb-8 text-gray-900 serif text-center">Onze Aanpak</h2>
+
+                <div class="space-y-6">
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg">
+                        <div class="flex items-center gap-6">
+                            <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                                ✨
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 sans mb-2">01 - Kick-off Workshop</h3>
+                                <p class="text-gray-600 sans font-light">Enthousiasmeren en de basis leggen</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg">
+                        <div class="flex items-center gap-6">
+                            <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                                👥
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 sans mb-2">02 - Hands-on Coaching</h3>
+                                <p class="text-gray-600 sans font-light">Begeleiding op de werkvloer</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg">
+                        <div class="flex items-center gap-6">
+                            <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                                💬
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 sans mb-2">03 - Helpdesk & Support</h3>
+                                <p class="text-gray-600 sans font-light">Continue ondersteuning</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-strong rounded-2xl p-8 border border-cyan-200/50 shadow-lg">
+                        <div class="flex items-center gap-6">
+                            <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg text-white text-2xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                                🏆
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 sans mb-2">04 - Viering van Successen</h3>
+                                <p class="text-gray-600 sans font-light">Meten, vieren en optimaliseren</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA - 1:05-1:20 (15 sec) -->
+        <section class="demo-section min-h-screen flex items-center justify-center px-8 py-20" data-start="65" data-end="80">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="glass-strong rounded-3xl p-12 border border-cyan-200/50 shadow-2xl">
+                    <div class="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl text-5xl" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                        🚀
+                    </div>
+                    <h2 class="text-4xl font-bold serif mb-6 text-gray-900">Klaar om te Beginnen?</h2>
+                    <p class="text-xl font-light mb-10 text-gray-700 sans leading-relaxed">
+                        Van licenties naar cultuurverandering met praktische coaching en meetbare resultaten.
+                    </p>
+                    <button class="px-12 py-5 text-white rounded-xl font-semibold hover:shadow-2xl transition-all sans shadow-lg text-lg" style="background: linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%);">
+                        Plan een Kennismaking
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/app.js"></script>
+</body>
+</html>
