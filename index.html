@@ -137,11 +137,16 @@
 
     <!-- Video Ballon (met audio!) -->
     <div id="videoBallon">
-        <video id="videoPlayer" playsinline preload="auto">
+        <video id="videoPlayer" playsinline preload="auto" crossorigin="anonymous">
             <source src="video/fullsizerender.mp4" type="video/mp4">
             <source src="video/fullsizerender.mov" type="video/quicktime">
             Your browser does not support the video tag.
         </video>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(102, 197, 214, 0.95); color: white; padding: 20px 40px; border-radius: 15px; z-index: 10000; font-family: 'Inter', sans-serif; font-size: 18px;">
+        ⏳ Video laden...
     </div>
 
     <!-- Controls -->
@@ -350,6 +355,7 @@
         const progressBar = document.getElementById('progressBar');
         const sections = document.querySelectorAll('.demo-section');
         const startScreen = document.getElementById('startScreen');
+        const loadingIndicator = document.getElementById('loadingIndicator');
 
         let isPlaying = false;
         let currentSection = 0;
@@ -359,6 +365,7 @@
         let videoReady = false;
         let simulatedTime = 0;
         let timerInterval = null;
+        let isBuffering = false;
 
         // Initialize video (with audio!) loading immediately when page loads
         function initMedia() {
@@ -371,11 +378,36 @@
                 hasVideo = true;
             });
 
-            videoPlayer.addEventListener('canplaythrough', () => {
+            // Use 'canplay' instead of 'canplaythrough' - starts playing sooner
+            videoPlayer.addEventListener('canplay', () => {
                 hasVideo = true;
                 videoReady = true;
                 audioReady = true; // Video bevat de audio!
-                console.log('✅ Video fully loaded and ready (with audio)!');
+                console.log('✅ Video ready to play (enough buffered)!');
+                hideLoading();
+            });
+
+            // Also listen for canplaythrough for full buffer
+            videoPlayer.addEventListener('canplaythrough', () => {
+                console.log('✅ Video fully buffered!');
+            });
+
+            // Handle buffering
+            videoPlayer.addEventListener('waiting', () => {
+                isBuffering = true;
+                console.log('⏳ Video buffering...');
+                showLoading();
+            });
+
+            videoPlayer.addEventListener('stalled', () => {
+                console.log('⚠️ Video stalled (network slow)');
+                showLoading();
+            });
+
+            videoPlayer.addEventListener('playing', () => {
+                isBuffering = false;
+                console.log('▶️ Video playing smoothly');
+                hideLoading();
             });
 
             videoPlayer.addEventListener('play', () => {
@@ -385,6 +417,19 @@
 
             videoPlayer.addEventListener('pause', () => {
                 console.log('⏸️ Video paused');
+                if (!isBuffering) {
+                    hideLoading();
+                }
+            });
+
+            // Monitor buffering progress
+            videoPlayer.addEventListener('progress', () => {
+                if (videoPlayer.buffered.length > 0) {
+                    const bufferedEnd = videoPlayer.buffered.end(videoPlayer.buffered.length - 1);
+                    const duration = videoPlayer.duration;
+                    const bufferedPercent = (bufferedEnd / duration * 100).toFixed(1);
+                    console.log(`📊 Buffered: ${bufferedPercent}% (${bufferedEnd.toFixed(1)}s / ${duration.toFixed(1)}s)`);
+                }
             });
 
             videoPlayer.addEventListener('error', (e) => {
@@ -393,6 +438,7 @@
                 audioReady = false;
                 console.error('❌ Video error:', videoPlayer.error);
                 console.log('⚠️ Will fall back to timer mode');
+                hideLoading();
             });
 
             videoPlayer.addEventListener('timeupdate', () => updateSection());
@@ -400,6 +446,14 @@
 
             // Try to preload video
             videoPlayer.load();
+        }
+
+        function showLoading() {
+            loadingIndicator.style.display = 'block';
+        }
+
+        function hideLoading() {
+            loadingIndicator.style.display = 'none';
         }
 
         function startPresentation() {
@@ -456,25 +510,64 @@
             } else {
                 if (hasVideo && videoReady) {
                     console.log('▶️ Attempting to play video (with audio)...');
-                    console.log(`Current video state - readyState: ${videoPlayer.readyState}, paused: ${videoPlayer.paused}`);
+                    console.log(`Current video state - readyState: ${videoPlayer.readyState}, paused: ${videoPlayer.paused}, networkState: ${videoPlayer.networkState}`);
+
+                    // Check if enough is buffered
+                    if (videoPlayer.buffered.length > 0) {
+                        const bufferedEnd = videoPlayer.buffered.end(0);
+                        console.log(`📊 Buffered up to: ${bufferedEnd.toFixed(2)}s`);
+
+                        // Only start if we have at least 3 seconds buffered
+                        if (bufferedEnd < 3 && videoPlayer.readyState < 3) {
+                            console.log('⏳ Waiting for more buffer...');
+                            showLoading();
+
+                            // Wait for more buffering
+                            const waitForBuffer = setInterval(() => {
+                                if (videoPlayer.buffered.length > 0 && videoPlayer.buffered.end(0) >= 3) {
+                                    clearInterval(waitForBuffer);
+                                    console.log('✅ Enough buffered, starting playback');
+                                    hideLoading();
+                                    togglePlay();
+                                } else if (videoPlayer.readyState >= 3) {
+                                    clearInterval(waitForBuffer);
+                                    hideLoading();
+                                    togglePlay();
+                                }
+                            }, 200);
+
+                            // Fallback after 5 seconds
+                            setTimeout(() => {
+                                clearInterval(waitForBuffer);
+                                if (!isPlaying) {
+                                    console.log('⚠️ Taking too long, starting anyway');
+                                    hideLoading();
+                                }
+                            }, 5000);
+                            return;
+                        }
+                    }
 
                     // Reset to beginning if needed
                     if (videoPlayer.currentTime >= videoPlayer.duration) {
                         videoPlayer.currentTime = 0;
                     }
 
+                    showLoading();
                     const playPromise = videoPlayer.play();
                     if (playPromise !== undefined) {
                         playPromise.then(() => {
                             console.log('✅ Video playing successfully (with audio)!');
                             playBtn.textContent = '⏸';
                             isPlaying = true;
+                            hideLoading();
                         }).catch(err => {
                             console.error('❌ Video play failed!', err);
                             console.log('🔄 Falling back to timer mode');
                             hasVideo = false;
                             videoReady = false;
                             audioReady = false;
+                            hideLoading();
                             startTimer();
                             playBtn.textContent = '⏸';
                             isPlaying = true;
@@ -482,26 +575,30 @@
                     }
                 } else if (hasVideo && !videoReady) {
                     console.log('⏳ Video is loading, waiting for it to be ready...');
+                    showLoading();
+
                     // Wait for video to be ready
                     const checkReady = setInterval(() => {
                         if (videoReady) {
                             clearInterval(checkReady);
                             console.log('✅ Video is now ready, starting playback');
+                            hideLoading();
                             togglePlay();
                         }
                     }, 100);
 
-                    // Fallback to timer after 3 seconds
+                    // Fallback to timer after 5 seconds (increased from 3)
                     setTimeout(() => {
                         if (!videoReady) {
                             clearInterval(checkReady);
                             console.log('⚠️ Video took too long to load, using timer mode');
                             hasVideo = false;
+                            hideLoading();
                             startTimer();
                             playBtn.textContent = '⏸';
                             isPlaying = true;
                         }
-                    }, 3000);
+                    }, 5000);
                 } else {
                     console.log('⏱️ Starting timer mode (no video available)');
                     startTimer();
