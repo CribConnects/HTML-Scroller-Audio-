@@ -84,7 +84,7 @@
             border: 6px solid transparent;
             background: linear-gradient(white, white) padding-box,
                         linear-gradient(135deg, #88D8E8 0%, #66C5D6 100%) border-box;
-            transition: opacity 0.3s ease, box-shadow 0.3s ease;
+            transition: opacity 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
             opacity: 0;
             cursor: move;
             user-select: none;
@@ -99,8 +99,9 @@
             cursor: grabbing;
         }
 
-        #videoBallon:hover {
+        #videoBallon:hover:not(.dragging) {
             box-shadow: 0 15px 50px rgba(136, 216, 232, 0.6);
+            transform: scale(1.08);
         }
 
         #videoBallon video {
@@ -997,8 +998,22 @@
         }
 
         function setTranslate(xPos, yPos, el) {
+            // During drag, set the translate directly
             el.style.transform = `translate(${xPos}px, ${yPos}px)`;
         }
+
+        // When not dragging, allow CSS hover scale to work
+        videoBallon.addEventListener('mouseenter', function() {
+            if (!isDragging && (xOffset !== 0 || yOffset !== 0)) {
+                videoBallon.style.transform = `translate(${xOffset}px, ${yOffset}px) scale(1.08)`;
+            }
+        });
+
+        videoBallon.addEventListener('mouseleave', function() {
+            if (!isDragging && (xOffset !== 0 || yOffset !== 0)) {
+                videoBallon.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+            }
+        });
     </script>
 </body>
 </html>
