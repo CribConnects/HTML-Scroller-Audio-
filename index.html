@@ -856,16 +856,22 @@
         function toggleCard(card) {
             const wasExpanded = card.classList.contains('expanded');
 
-            // Close all other cards
-            document.querySelectorAll('.expandable-card.expanded').forEach(c => {
-                if (c !== card) c.classList.remove('expanded');
+            // If card is being collapsed, just collapse it
+            if (wasExpanded) {
+                card.classList.remove('expanded');
+                return;
+            }
+
+            // If card is being expanded, first close ALL cards (including this one)
+            document.querySelectorAll('.expandable-card').forEach(c => {
+                c.classList.remove('expanded');
             });
 
-            // Toggle this card
-            card.classList.toggle('expanded');
+            // Then expand only this card
+            card.classList.add('expanded');
 
-            // Pause video if expanding to give time to read
-            if (!wasExpanded && isPlaying) {
+            // Show pause tooltip only once total
+            if (isPlaying && !hasShownPauseTooltip) {
                 console.log('📖 Card expanded, suggesting pause...');
                 setTimeout(() => showPauseTooltip(), 500);
             }
@@ -874,12 +880,14 @@
         // Pause tooltip functions
         const pauseTooltip = document.getElementById('pauseTooltip');
         let pauseTooltipTimeout = null;
-        let shownTooltips = new Set();
+        let hasShownPauseTooltip = false; // Track if we've shown the tooltip at all
 
         function showPauseTooltip() {
-            // Don't show if already shown recently
+            // Only show tooltip once per session
+            if (hasShownPauseTooltip) return;
             if (pauseTooltip.classList.contains('show')) return;
 
+            hasShownPauseTooltip = true;
             pauseTooltip.classList.add('show');
 
             // Auto-hide after 5 seconds
@@ -894,21 +902,15 @@
             clearTimeout(pauseTooltipTimeout);
         }
 
-        // Auto-show tooltips at specific times
-        const tooltipTriggers = [
-            { time: 25, id: 'problem' },    // During problem section
-            { time: 50, id: 'strategy' },   // During strategy section
-            { time: 75, id: 'approach' }    // During approach section
-        ];
+        // Show tooltip only at first trigger
+        let firstTooltipShown = false;
 
         function checkTooltipTriggers(currentTime) {
-            tooltipTriggers.forEach(trigger => {
-                // Show tooltip if we're at the trigger time and haven't shown it yet
-                if (currentTime >= trigger.time && currentTime < trigger.time + 0.5 && !shownTooltips.has(trigger.id)) {
-                    shownTooltips.add(trigger.id);
-                    showPauseTooltip();
-                }
-            });
+            // Only show tooltip once automatically at 25 seconds
+            if (!firstTooltipShown && currentTime >= 25 && currentTime < 25.5) {
+                firstTooltipShown = true;
+                showPauseTooltip();
+            }
         }
     </script>
 </body>
